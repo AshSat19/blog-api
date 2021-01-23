@@ -28,13 +28,21 @@ export class PostsController {
     return publishedPosts;
   }
 
-  @Get(':category')
+  @Get('categories/:category')
   async getPostsByCategory(
     @Param('category') category: string,
   ): Promise<BlogPostSimple[]> {
     const query = { published: true, category };
     const publishedPosts = await this.postService.getPosts(query);
     return publishedPosts;
+  }
+
+  @Get(':slug')
+  async getPostBySlug(
+    @Param('slug') slug: string,
+  ): Promise<BlogPost> {
+    const post = await this.postService.getPost(slug);
+    return post;
   }
 
   @Post()
