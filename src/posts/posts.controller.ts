@@ -37,10 +37,27 @@ export class PostsController {
     return publishedPosts;
   }
 
+  @Get('search/:category/:searchString')
+  async searchPosts(
+    @Param('category') category: string,
+    @Param('searchString') searchString: string,
+  ): Promise<BlogPostSimple[]> {
+    const searchRegex = new RegExp(searchString || '', 'i');
+    let query: Object = {
+      published: true,
+      $or: [
+        { title: searchRegex },
+        { summary: searchRegex },
+        { content: searchRegex },
+      ],
+    };
+    if (category !== 'ALL') query = { ...query, category };
+    const publishedPosts = await this.postService.getPosts(query);
+    return publishedPosts;
+  }
+
   @Get(':slug')
-  async getPostBySlug(
-    @Param('slug') slug: string,
-  ): Promise<BlogPost> {
+  async getPostBySlug(@Param('slug') slug: string): Promise<BlogPost> {
     const post = await this.postService.getPost(slug);
     return post;
   }

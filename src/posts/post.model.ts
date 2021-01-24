@@ -11,6 +11,8 @@ export const BlogPostSchema = new mongoose.Schema({
   published: { type: Boolean, default: false },
 });
 
+BlogPostSchema.index({ title: 'text', content: 'text', summary: 'text' });
+
 export interface BlogPost {
   slug: string;
   title: string;
