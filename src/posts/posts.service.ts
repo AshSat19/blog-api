@@ -14,7 +14,9 @@ export class PostsService {
   ): Promise<BlogPostSimple[]> {
     const posts = await this.postModel
       .find(queryOptions)
-      .select('slug title summary imageURL category createdDate published')
+      .select(
+        'slug title summary imageURL category createdDate likes published',
+      )
       .lean()
       .exec();
     return posts;
@@ -26,20 +28,20 @@ export class PostsService {
   }
 
   async savePost(postBody: BlogPost): Promise<BlogPost> {
-    const savedPost = await this.postModel.create(postBody);
+    const savedPost = await await this.postModel.create(postBody);
     return savedPost;
   }
 
   async updatePost(postBody: BlogPost): Promise<BlogPost> {
-    const updatedPost = await this.postModel.updateOne(
-      { slug: postBody.slug },
-      postBody,
-    );
+    const updatedPost = await this.postModel
+      .findOneAndUpdate({ slug: postBody.slug }, postBody)
+      .lean()
+      .exec();
     return updatedPost;
   }
 
   async deletePost(postSlug: string): Promise<any> {
-    const res = await this.postModel.deleteOne({ slug: postSlug });
+    const res = await this.postModel.deleteOne({ slug: postSlug }).exec();
     return res;
   }
 }

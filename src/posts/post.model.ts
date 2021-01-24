@@ -9,6 +9,7 @@ export const BlogPostSchema = new mongoose.Schema({
   imageURL: { type: String },
   createdDate: { type: Number, default: Date.now() },
   published: { type: Boolean, default: false },
+  likes: { type: Number, default: 0 },
 });
 
 BlogPostSchema.index({ title: 'text', content: 'text', summary: 'text' });
@@ -20,8 +21,9 @@ export interface BlogPost {
   content: string;
   summary?: string;
   imageURL?: string;
-  createdDate: Date;
+  createdDate: number;
   published: boolean;
+  likes?: number;
 }
 
 export interface BlogPostModel extends mongoose.Document {
@@ -31,8 +33,9 @@ export interface BlogPostModel extends mongoose.Document {
   content: string;
   summary?: string;
   imageURL?: string;
-  createdDate: Date;
+  createdDate: number;
   published: boolean;
+  likes?: number;
 }
 
 export interface BlogPostSimple {
@@ -41,5 +44,6 @@ export interface BlogPostSimple {
   category: string;
   summary?: string;
   imageURL?: string;
-  createdDate: Date;
+  createdDate: number;
+  likes?: number;
 }

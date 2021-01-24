@@ -70,7 +70,14 @@ export class PostsController {
 
   @Put(':postSlug')
   async updatePost(@Body() postBody: BlogPost): Promise<BlogPost> {
-    const updatedPost = await this.postService.savePost(postBody);
+    const updatedPost = await this.postService.updatePost(postBody);
+    return updatedPost;
+  }
+
+  @Put('like/:postSlug')
+  async likePost(@Body() postBody: BlogPost): Promise<BlogPost> {
+    postBody.likes += 1;
+    const updatedPost = await this.postService.updatePost(postBody);
     return updatedPost;
   }
 
