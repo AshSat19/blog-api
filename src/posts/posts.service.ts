@@ -11,6 +11,10 @@ export class PostsService {
 
   async getPosts(
     queryOptions: { published?: boolean; category?: string } = {},
+    paginationOptions: { limit?: number; skip?: number } = {
+      limit: 6,
+      skip: 0,
+    },
   ): Promise<BlogPostSimple[]> {
     const posts = await this.postModel
       .find(queryOptions)
@@ -21,6 +25,16 @@ export class PostsService {
       .lean()
       .exec();
     return posts;
+  }
+
+  async countPosts(
+    queryOptions: { published?: boolean; category?: string } = {},
+  ): Promise<number> {
+    const totalCount = await this.postModel
+      .countDocuments(queryOptions)
+      .lean()
+      .exec();
+    return totalCount;
   }
 
   async getPost(slug: string): Promise<BlogPost> {
