@@ -17,6 +17,7 @@ export class PostsService {
       .select(
         'slug title summary imageURL category createdDate likes published',
       )
+      .sort([['createdDate', -1]])
       .lean()
       .exec();
     return posts;
